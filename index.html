@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <script>
+            var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a]') || CSS.supports('top: constant(a)'))
+            document.write('<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' + (coverSupport ? ', viewport-fit=cover' : '') + '" />')
+        </script>
+        <title>智慧工地巡检</title>
+        <link rel="stylesheet" href="<%= BASE_URL %>static/index.<%= VUE_APP_INDEX_CSS_HASH %>.css" />
+    </head>
+    <body>
+        <noscript>
+            <strong>请启用 JavaScript 以继续使用此应用。</strong>
+        </noscript>
+        <div id="app"></div>
+        <script src="<%= BASE_URL %>static/js/chunk-vendors.<%= VUE_APP_CHUNK_JS_HASH %>.js"></script>
+        <script src="<%= BASE_URL %>static/js/index.<%= VUE_APP_INDEX_JS_HASH %>.js"></script>
+    </body>
+</html>

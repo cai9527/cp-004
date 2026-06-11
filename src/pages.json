@@ -1,0 +1,151 @@
+{
+	"pages": [
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "工作台",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/task/list",
+			"style": {
+				"navigationBarTitleText": "巡检任务",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/task/detail",
+			"style": {
+				"navigationBarTitleText": "任务详情",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/inspection/record",
+			"style": {
+				"navigationBarTitleText": "现场检查记录",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/hazard/list",
+			"style": {
+				"navigationBarTitleText": "安全隐患",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/hazard/report",
+			"style": {
+				"navigationBarTitleText": "隐患上报",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/hazard/detail",
+			"style": {
+				"navigationBarTitleText": "隐患详情",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/rectify/list",
+			"style": {
+				"navigationBarTitleText": "整改跟踪",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/rectify/detail",
+			"style": {
+				"navigationBarTitleText": "整改详情",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/statistics/index",
+			"style": {
+				"navigationBarTitleText": "数据分析",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/mine/index",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/mine/sync",
+			"style": {
+				"navigationBarTitleText": "离线同步",
+				"navigationBarBackgroundColor": "#1E88E5",
+				"navigationBarTextStyle": "white"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "智慧工地巡检",
+		"navigationBarBackgroundColor": "#1E88E5",
+		"backgroundColor": "#F5F6FA"
+	},
+	"tabBar": {
+		"color": "#8a8a8a",
+		"selectedColor": "#1E88E5",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home-active.png",
+				"text": "工作台"
+			},
+			{
+				"pagePath": "pages/task/list",
+				"iconPath": "static/tabbar/task.png",
+				"selectedIconPath": "static/tabbar/task-active.png",
+				"text": "任务"
+			},
+			{
+				"pagePath": "pages/hazard/list",
+				"iconPath": "static/tabbar/hazard.png",
+				"selectedIconPath": "static/tabbar/hazard-active.png",
+				"text": "隐患"
+			},
+			{
+				"pagePath": "pages/statistics/index",
+				"iconPath": "static/tabbar/stat.png",
+				"selectedIconPath": "static/tabbar/stat-active.png",
+				"text": "统计"
+			},
+			{
+				"pagePath": "pages/mine/index",
+				"iconPath": "static/tabbar/mine.png",
+				"selectedIconPath": "static/tabbar/mine-active.png",
+				"text": "我的"
+			}
+		]
+	}
+}

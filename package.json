@@ -1,0 +1,44 @@
+{
+  "name": "smart-site-inspection",
+  "version": "1.0.0",
+  "description": "智慧工地安全巡检移动端应用",
+  "main": "main.js",
+  "scripts": {
+    "dev:h5": "cross-env NODE_ENV=development UNI_PLATFORM=h5 vue-cli-service uni-serve",
+    "build:h5": "cross-env NODE_ENV=production UNI_PLATFORM=h5 vue-cli-service uni-build",
+    "dev:mp-weixin": "cross-env NODE_ENV=development UNI_PLATFORM=mp-weixin vue-cli-service uni-build --watch",
+    "build:mp-weixin": "cross-env NODE_ENV=production UNI_PLATFORM=mp-weixin vue-cli-service uni-build",
+    "dev:app": "cross-env NODE_ENV=development UNI_PLATFORM=app vue-cli-service uni-build --watch --mode development",
+    "build:app": "cross-env NODE_ENV=production UNI_PLATFORM=app vue-cli-service uni-build"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app-plus": "^2.0.2-4020420240722001",
+    "@dcloudio/uni-h5": "^2.0.2-4020420240722001",
+    "@dcloudio/uni-mp-weixin": "^2.0.2-4020420240722001",
+    "uview-ui": "^1.8.4",
+    "vue": "^2.6.14",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@dcloudio/uni-cli-i18n": "^2.0.2-5000720260410001",
+    "@dcloudio/uni-cli-shared": "^2.0.2-4020420240722001",
+    "@dcloudio/uni-helper-json": "^1.0.13",
+    "@dcloudio/uni-i18n": "^2.0.2-5000720260410001",
+    "@dcloudio/uni-migration": "^2.0.2-4020420240722001",
+    "@dcloudio/uni-shared": "^3.0.0-alpha-3000020210521001",
+    "@dcloudio/uni-stat": "^2.0.2-5000720260410001",
+    "@dcloudio/uni-template-compiler": "^2.0.2-4020420240722001",
+    "@dcloudio/vue-cli-plugin-hbuilderx": "^2.0.2-5000720260410001",
+    "@dcloudio/vue-cli-plugin-uni": "^2.0.2-5000720260410001",
+    "@dcloudio/webpack-uni-pages-loader": "^2.0.2-5000720260410001",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "cross-env": "^7.0.3",
+    "postcss-import": "^16.1.1",
+    "postcss-pxtorem": "^6.1.0",
+    "postcss-url": "^10.1.4",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.2",
+    "vue-template-compiler": "^2.6.14"
+  }
+}
