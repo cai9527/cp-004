@@ -4,6 +4,24 @@
             <transition name="fade-slide" mode="out-in">
                 <view v-if="currentTab === 0" key="index" class="tab-page">
                     <view class="workbench">
+                        <view class="page-navbar navbar-workbench">
+                            <view class="nav-left" v-if="canGoBack" @tap="handleBack">
+                                <view class="back-btn-wrap">
+                                    <text class="nav-back-icon">←</text>
+                                </view>
+                            </view>
+                            <view class="nav-left nav-left-placeholder" v-else></view>
+                            <text class="navbar-title">工作台</text>
+                            <view class="nav-right">
+                                <view class="nav-icon-btn" @tap="goScan">
+                                    <text>📷</text>
+                                </view>
+                                <view class="nav-icon-btn" @tap="showMessageCenter">
+                                    <text>💬</text>
+                                    <view v-if="pendingSyncCount > 0" class="nav-badge">{{ pendingSyncCount > 99 ? '99+' : pendingSyncCount }}</view>
+                                </view>
+                            </view>
+                        </view>
                         <view class="header-section">
                             <view class="user-info">
                                 <view class="avatar">
@@ -104,7 +122,24 @@
                 <view v-else-if="currentTab === 1" key="task" class="tab-page">
                     <view class="task-list-page">
                         <view class="page-navbar">
+                            <view class="nav-left" v-if="canGoBack" @tap="handleBack">
+                                <view class="back-btn-wrap">
+                                    <text class="nav-back-icon">←</text>
+                                </view>
+                            </view>
+                            <view class="nav-left nav-left-placeholder" v-else></view>
                             <text class="navbar-title">巡检任务</text>
+                            <view class="nav-right">
+                                <view class="nav-icon-btn" @tap="refreshTaskList">
+                                    <text>🔄</text>
+                                </view>
+                                <view class="nav-icon-btn" @tap="goCreateTask">
+                                    <text>➕</text>
+                                </view>
+                                <view class="nav-icon-btn" @tap="toggleTaskFilter">
+                                    <text>🔍</text>
+                                </view>
+                            </view>
                         </view>
                         <view class="search-bar">
                             <view class="search-input-wrap">
@@ -175,7 +210,24 @@
                 <view v-else-if="currentTab === 2" key="hazard" class="tab-page">
                     <view class="hazard-list-page">
                         <view class="page-navbar">
+                            <view class="nav-left" v-if="canGoBack" @tap="handleBack">
+                                <view class="back-btn-wrap">
+                                    <text class="nav-back-icon">←</text>
+                                </view>
+                            </view>
+                            <view class="nav-left nav-left-placeholder" v-else></view>
                             <text class="navbar-title">安全隐患</text>
+                            <view class="nav-right">
+                                <view class="nav-icon-btn" @tap="refreshHazardList">
+                                    <text>🔄</text>
+                                </view>
+                                <view class="nav-icon-btn" @tap="showHazardLevel">
+                                    <text>🚩</text>
+                                </view>
+                                <view class="nav-icon-btn" @tap="showHazardFilter">
+                                    <text>📊</text>
+                                </view>
+                            </view>
                         </view>
                         <view class="search-bar">
                             <view class="search-input-wrap">
@@ -250,7 +302,21 @@
                 <view v-else-if="currentTab === 3" key="stat" class="tab-page">
                     <view class="statistics-page">
                         <view class="page-navbar navbar-blue">
+                            <view class="nav-left nav-left-light" v-if="canGoBack" @tap="handleBack">
+                                <view class="back-btn-wrap back-btn-light">
+                                    <text class="nav-back-icon">←</text>
+                                </view>
+                            </view>
+                            <view class="nav-left nav-left-placeholder" v-else></view>
                             <text class="navbar-title">数据分析</text>
+                            <view class="nav-right">
+                                <view class="nav-icon-btn nav-icon-btn-light" @tap="changeDateRange">
+                                    <text>📅</text>
+                                </view>
+                                <view class="nav-icon-btn nav-icon-btn-light" @tap="exportReport">
+                                    <text>📤</text>
+                                </view>
+                            </view>
                         </view>
                         <view class="overview-section">
                             <view class="section-title-wrap">
@@ -312,6 +378,23 @@
 
                 <view v-else-if="currentTab === 4" key="mine" class="tab-page">
                     <view class="mine-page">
+                        <view class="page-navbar navbar-mine">
+                            <view class="nav-left" v-if="canGoBack" @tap="handleBack">
+                                <view class="back-btn-wrap">
+                                    <text class="nav-back-icon">←</text>
+                                </view>
+                            </view>
+                            <view class="nav-left nav-left-placeholder" v-else></view>
+                            <text class="navbar-title">个人中心</text>
+                            <view class="nav-right">
+                                <view class="nav-icon-btn" @tap="showSettings">
+                                    <text>⚙️</text>
+                                </view>
+                                <view class="nav-icon-btn" @tap="showHelp">
+                                    <text>❓</text>
+                                </view>
+                            </view>
+                        </view>
                         <view class="user-header">
                             <view class="header-bg"></view>
                             <view class="user-card">
@@ -572,6 +655,10 @@ export default {
                 max = Math.max(max, item.tasks, item.hazards)
             })
             return max
+        },
+        canGoBack() {
+            const pages = getCurrentPages()
+            return pages && pages.length > 1
         }
     },
     onShow() {
@@ -662,6 +749,72 @@ export default {
                     }
                 }
             })
+        },
+        handleBack() {
+            if (this.canGoBack) {
+                uni.navigateBack({ delta: 1 })
+            } else {
+                uni.showToast({
+                    title: '已是首页',
+                    icon: 'none',
+                    duration: 1500
+                })
+            }
+        },
+        goScan() {
+            uni.showToast({ title: '扫一扫功能开发中', icon: 'none' })
+        },
+        showMessageCenter() {
+            uni.showToast({ title: '消息中心开发中', icon: 'none' })
+        },
+        refreshTaskList() {
+            this.loadTrendData()
+            uni.showToast({ title: '任务列表已刷新', icon: 'success' })
+        },
+        toggleTaskFilter() {
+            uni.showToast({ title: '高级筛选开发中', icon: 'none' })
+        },
+        goCreateTask() {
+            uni.showToast({ title: '新建任务开发中', icon: 'none' })
+        },
+        refreshHazardList() {
+            uni.showToast({ title: '隐患列表已刷新', icon: 'success' })
+        },
+        showHazardFilter() {
+            uni.showToast({ title: '隐患统计开发中', icon: 'none' })
+        },
+        showHazardLevel() {
+            const items = ['重大隐患', '较大隐患', '一般隐患', '轻微隐患']
+            uni.showActionSheet({
+                itemList: items,
+                success: (res) => {
+                    uni.showToast({ title: `筛选：${items[res.tapIndex]}`, icon: 'none' })
+                }
+            })
+        },
+        changeDateRange() {
+            const items = ['近7天', '近30天', '近3个月', '自定义']
+            uni.showActionSheet({
+                itemList: items,
+                success: (res) => {
+                    this.loadTrendData()
+                    uni.showToast({ title: `已切换：${items[res.tapIndex]}`, icon: 'none' })
+                }
+            })
+        },
+        exportReport() {
+            uni.showToast({ title: '报表导出开发中', icon: 'none' })
+        },
+        showSettings() {
+            uni.showToast({ title: '设置开发中', icon: 'none' })
+        },
+        showHelp() {
+            uni.showModal({
+                title: '使用帮助',
+                content: '1. 底部Tab切换不同模块\n2. 点击列表项查看详情\n3. 隐患页右下角按钮可上报隐患\n4. 支持离线使用，数据自动同步',
+                showCancel: false,
+                confirmText: '知道了'
+            })
         }
     }
 }
@@ -722,6 +875,145 @@ export default {
 
 .navbar-blue .navbar-title {
     color: #fff;
+}
+
+.navbar-workbench {
+    padding: 0 24rpx;
+    background: linear-gradient(180deg, #1E88E5 0%, #1565C0 100%);
+    border-bottom: none;
+    position: relative;
+    z-index: 10;
+}
+
+.navbar-workbench .navbar-title {
+    color: #fff;
+}
+
+.navbar-mine {
+    padding: 0 24rpx;
+    background: transparent;
+    border-bottom: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.navbar-mine .navbar-title {
+    color: #fff;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    min-width: 80rpx;
+}
+
+.nav-left-placeholder {
+    min-width: 80rpx;
+    visibility: hidden;
+}
+
+.back-btn-wrap {
+    width: 64rpx;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.back-btn-wrap:active {
+    transform: scale(0.92);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.page-navbar:not(.navbar-workbench):not(.navbar-blue):not(.navbar-mine) .back-btn-wrap {
+    background: #F5F6FA;
+}
+
+.page-navbar:not(.navbar-workbench):not(.navbar-blue):not(.navbar-mine) .back-btn-wrap:active {
+    background: #E8EAF6;
+}
+
+.back-btn-light {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.back-btn-light:active {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.nav-back-icon {
+    font-size: 40rpx;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1;
+}
+
+.page-navbar:not(.navbar-workbench):not(.navbar-blue):not(.navbar-mine) .nav-back-icon {
+    color: #333;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    min-width: 80rpx;
+    gap: 8rpx;
+}
+
+.nav-icon-btn {
+    position: relative;
+    width: 64rpx;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    transition: all 0.2s;
+    font-size: 32rpx;
+}
+
+.nav-icon-btn:active {
+    transform: scale(0.92);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.page-navbar:not(.navbar-workbench):not(.navbar-blue):not(.navbar-mine) .nav-icon-btn {
+    background: #F5F6FA;
+}
+
+.page-navbar:not(.navbar-workbench):not(.navbar-blue):not(.navbar-mine) .nav-icon-btn:active {
+    background: #E8EAF6;
+}
+
+.nav-icon-btn-light {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-icon-btn-light:active {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.nav-badge {
+    position: absolute;
+    top: 2rpx;
+    right: 2rpx;
+    min-width: 28rpx;
+    height: 28rpx;
+    background: #E53935;
+    border-radius: 14rpx;
+    font-size: 18rpx;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6rpx;
+    font-weight: 600;
 }
 
 .search-bar {
@@ -814,9 +1106,35 @@ export default {
 .hazard-card {
     background: #fff;
     border-radius: 20rpx;
-    margin-bottom: 24rpx;
+    margin-bottom: 0;
     overflow: hidden;
     box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+    border-bottom: 2rpx solid #F0F2F5;
+}
+
+.task-container .task-card,
+.hazard-container .hazard-card {
+    margin-bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.task-container .task-card:first-child,
+.hazard-container .hazard-card:first-child {
+    border-radius: 20rpx 20rpx 0 0;
+}
+
+.task-container .task-card:last-child,
+.hazard-container .hazard-card:last-child {
+    border-radius: 0 0 20rpx 20rpx;
+    border-bottom: none;
+    margin-bottom: 24rpx;
+}
+
+.task-container:has(.task-card:only-child) .task-card,
+.hazard-container:has(.hazard-card:only-child) .hazard-card {
+    border-radius: 20rpx;
+    border-bottom: none;
 }
 
 .card-header {
@@ -1418,9 +1736,24 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 8rpx;
-    padding: 16rpx;
-    background: #FAFBFC;
-    border-radius: 12rpx;
+    padding: 20rpx 16rpx;
+    background: #fff;
+    border-radius: 0;
+    border-bottom: 2rpx solid #F0F2F5;
+}
+
+.trend-list .trend-item:first-child {
+    border-radius: 16rpx 16rpx 0 0;
+}
+
+.trend-list .trend-item:last-child {
+    border-radius: 0 0 16rpx 16rpx;
+    border-bottom: none;
+}
+
+.trend-list:has(.trend-item:only-child) .trend-item {
+    border-radius: 16rpx;
+    border-bottom: none;
 }
 
 .trend-label {
