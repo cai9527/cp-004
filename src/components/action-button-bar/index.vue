@@ -23,14 +23,19 @@
                         'btn-loading': btn.loading,
                         'btn-disabled': btn.disabled || btn.loading,
                         'btn-ghost': btn.ghost,
-                        'btn-outline': btn.outline
+                        'btn-outline': btn.outline,
+                        'btn-active': activeIndex === index
                     }
                 ]"
                 :disabled="btn.disabled || btn.loading"
                 :loading="btn.loading"
                 @tap="handleClick(btn, index)"
-                @touchstart="handleTouchStart(index)"
-                @touchend="handleTouchEnd(index)"
+                @touchstart.prevent="onPressStart(index, btn)"
+                @touchend="onPressEnd"
+                @touchcancel="onPressEnd"
+                @mousedown.prevent="onPressStart(index, btn)"
+                @mouseup="onPressEnd"
+                @mouseleave="onPressEnd"
             >
                 <view class="btn-content" v-if="!btn.loading">
                     <text v-if="btn.icon" class="btn-icon">{{ btn.icon }}</text>
@@ -82,23 +87,43 @@ export default {
     },
     data() {
         return {
-            touchIndex: -1
+            activeIndex: -1,
+            activeTimer: null
         }
     },
+    beforeDestroy() {
+        this.clearActiveTimer()
+    },
     methods: {
+        clearActiveTimer() {
+            if (this.activeTimer) {
+                clearTimeout(this.activeTimer)
+                this.activeTimer = null
+            }
+        },
+        isBtnInteractive(btn) {
+            return !btn.disabled && !btn.loading
+        },
+        onPressStart(index, btn) {
+            if (!this.isBtnInteractive(btn)) return
+            this.clearActiveTimer()
+            this.activeIndex = index
+        },
+        onPressEnd() {
+            if (this.activeIndex === -1) return
+            const idx = this.activeIndex
+            this.clearActiveTimer()
+            this.activeTimer = setTimeout(() => {
+                this.activeIndex = -1
+            }, 150)
+        },
         handleClick(btn, index) {
-            if (btn.disabled || btn.loading) return
+            if (!this.isBtnInteractive(btn)) return
             if (btn.onClick) {
                 btn.onClick(btn, index)
             }
             this.$emit('click', btn, index)
             this.$emit(`click:${index}`, btn)
-        },
-        handleTouchStart(index) {
-            this.touchIndex = index
-        },
-        handleTouchEnd() {
-            this.touchIndex = -1
         },
         getBtnWrapperStyle(btn, index) {
             if (this.layout === 'vertical') {
@@ -118,7 +143,7 @@ export default {
                     marginRight: index < this.buttons.length - 1 ? this.gap : '0'
                 }
             }
-            if (btn.type === 'primary' || btn.type === 'success' || btn.type === 'danger') {
+            if (['primary', 'success', 'danger', 'warning'].includes(btn.type)) {
                 return {
                     flex: 2,
                     marginRight: index < this.buttons.length - 1 ? this.gap : '0'
@@ -212,9 +237,11 @@ export default {
         border: none;
     }
 
-    &:active {
+    &:active,
+    &.btn-active {
         transform: scale(0.97);
-        opacity: 0.9;
+        opacity: 0.92;
+        transition: all 0.1s ease;
     }
 
     &.btn-block {
@@ -326,6 +353,63 @@ export default {
         border: 2rpx solid #E53935;
         color: #E53935;
         box-shadow: none;
+    }
+
+    &.btn-type-default.btn-active,
+    &.btn-type-cancel.btn-active {
+        background: #E8EAF0;
+        color: #333;
+    }
+
+    &.btn-type-default.btn-outline.btn-active,
+    &.btn-type-cancel.btn-outline.btn-active {
+        background: #F5F6FA;
+        border-color: #999;
+        color: #333;
+    }
+
+    &.btn-type-primary.btn-active {
+        background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
+        box-shadow: 0 4rpx 12rpx rgba(30, 136, 229, 0.25);
+    }
+
+    &.btn-type-primary.btn-outline.btn-active {
+        background: #E3F2FD;
+        border-color: #1565C0;
+        color: #0D47A1;
+    }
+
+    &.btn-type-success.btn-active {
+        background: linear-gradient(135deg, #388E3C 0%, #1B5E20 100%);
+        box-shadow: 0 4rpx 12rpx rgba(67, 160, 71, 0.25);
+    }
+
+    &.btn-type-success.btn-outline.btn-active {
+        background: #E8F5E9;
+        border-color: #2E7D32;
+        color: #1B5E20;
+    }
+
+    &.btn-type-warning.btn-active {
+        background: linear-gradient(135deg, #EF6C00 0%, #BF360C 100%);
+        box-shadow: 0 4rpx 12rpx rgba(251, 140, 0, 0.25);
+    }
+
+    &.btn-type-warning.btn-outline.btn-active {
+        background: #FFF3E0;
+        border-color: #E65100;
+        color: #BF360C;
+    }
+
+    &.btn-type-danger.btn-active {
+        background: linear-gradient(135deg, #C62828 0%, #8E0000 100%);
+        box-shadow: 0 4rpx 12rpx rgba(229, 57, 53, 0.25);
+    }
+
+    &.btn-type-danger.btn-outline.btn-active {
+        background: #FFEBEE;
+        border-color: #C62828;
+        color: #8E0000;
     }
 }
 
