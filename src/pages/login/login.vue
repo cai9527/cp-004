@@ -5,6 +5,9 @@
                 <view class="bg-circle bg-circle-1"></view>
                 <view class="bg-circle bg-circle-2"></view>
             </view>
+            <view class="back-btn" v-if="canGoBack" @tap="goBack">
+                <view class="back-arrow"></view>
+            </view>
             <view class="logo-area">
                 <view class="logo-icon">
                     <view class="logo-shape">
@@ -54,12 +57,9 @@
 
                 <view class="form-options">
                     <view class="remember-me" @tap="toggleRemember">
-                        <checkbox 
-                            :checked="rememberMe" 
-                            color="#1E88E5"
-                            class="remember-checkbox"
-                            @tap.stop="toggleRemember"
-                        />
+                        <view class="custom-checkbox" :class="{ 'checked': rememberMe }">
+                            <view class="check-mark" v-if="rememberMe"></view>
+                        </view>
                         <text class="remember-text">记住密码</text>
                     </view>
                     <text class="forgot-password" @tap="showTip">忘记密码？</text>
@@ -111,7 +111,9 @@ export default {
             },
             showPassword: false,
             rememberMe: false,
-            isLoading: false
+            isLoading: false,
+            canGoBack: false,
+            statusBarHeight: 0
         }
     },
     onLoad() {
@@ -124,8 +126,21 @@ export default {
                 this.rememberMe = true
             } catch (e) {}
         }
+        const pages = getCurrentPages()
+        this.canGoBack = pages.length > 1
+        try {
+            const sysInfo = uni.getSystemInfoSync()
+            this.statusBarHeight = sysInfo.statusBarHeight || 0
+        } catch (e) {}
     },
     methods: {
+        goBack() {
+            const pages = getCurrentPages()
+            if (pages.length > 1) {
+                uni.navigateBack({ delta: 1 })
+            }
+        },
+
         async handleLogin() {
             if (!this.form.username.trim()) {
                 return uni.showToast({ title: '请输入用户名', icon: 'none' })
@@ -177,6 +192,13 @@ export default {
 
         toggleRemember() {
             this.rememberMe = !this.rememberMe
+            if (this.rememberMe) {
+                if (this.form.username && this.form.password) {
+                    uni.setStorageSync('remember_account', JSON.stringify(this.form))
+                }
+            } else {
+                uni.removeStorageSync('remember_account')
+            }
         }
     }
 }
@@ -224,6 +246,35 @@ export default {
     height: 400rpx;
     bottom: -100rpx;
     left: -150rpx;
+}
+
+.back-btn {
+    position: absolute;
+    top: 24rpx;
+    left: 24rpx;
+    z-index: 10;
+    width: 72rpx;
+    height: 72rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.back-btn:active {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(0.92);
+}
+
+.back-arrow {
+    width: 20rpx;
+    height: 20rpx;
+    border-left: 4rpx solid #fff;
+    border-bottom: 4rpx solid #fff;
+    transform: rotate(45deg);
+    margin-left: 6rpx;
 }
 
 .logo-area {
@@ -362,15 +413,36 @@ export default {
     align-items: center;
 }
 
-.remember-checkbox {
-    transform: scale(0.8);
-    margin-right: 4rpx;
+.custom-checkbox {
+    width: 40rpx;
+    height: 40rpx;
+    border: 3rpx solid #D0D5DD;
+    border-radius: 8rpx;
+    margin-right: 14rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    background: #fff;
+}
+
+.custom-checkbox.checked {
+    background: #1E88E5;
+    border-color: #1E88E5;
+}
+
+.check-mark {
+    width: 14rpx;
+    height: 22rpx;
+    border-right: 4rpx solid #fff;
+    border-bottom: 4rpx solid #fff;
+    transform: rotate(45deg);
+    margin-top: -4rpx;
 }
 
 .remember-text {
     font-size: 28rpx;
     color: #555;
-    margin-left: 4rpx;
 }
 
 .forgot-password {
