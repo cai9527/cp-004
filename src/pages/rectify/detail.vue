@@ -192,34 +192,34 @@
             <view class="bottom-space"></view>
         </scroll-view>
 
-        <view class="footer-bar" v-if="hazard">
-            <template v-if="canAssign">
-                <button class="btn-primary" @tap="showAssignModal">
-                    <text>指派整改</text>
-                </button>
-            </template>
-
-            <template v-else-if="canSubmitRectify">
-                <button class="btn-primary" @tap="showRectifyModal">
-                    <text>提交整改</text>
-                </button>
-            </template>
-
-            <template v-else-if="canReview">
-                <button class="btn-success" @tap="reviewPass">
-                    <text>复查通过</text>
-                </button>
-                <button class="btn-danger" @tap="reviewReject">
-                    <text>复查不通过</text>
-                </button>
-            </template>
-
-            <template v-else>
-                <button class="btn-disabled" disabled>
-                    <text>{{ getStatusTip() }}</text>
-                </button>
-            </template>
-        </view>
+        <ActionButtonBar
+            v-if="hazard && canAssign"
+            :buttons="[{ text: '指派整改', type: 'primary', onClick: showAssignModal }]"
+            variant="fixed"
+            :safe-area="true"
+        />
+        <ActionButtonBar
+            v-else-if="hazard && canSubmitRectify"
+            :buttons="[{ text: '提交整改', type: 'primary', onClick: showRectifyModal }]"
+            variant="fixed"
+            :safe-area="true"
+        />
+        <ActionButtonBar
+            v-else-if="hazard && canReview"
+            :buttons="[
+                { text: '复查通过', type: 'success', onClick: reviewPass },
+                { text: '复查不通过', type: 'danger', onClick: reviewReject }
+            ]"
+            variant="fixed"
+            :safe-area="true"
+            layout="equal"
+        />
+        <ActionButtonBar
+            v-else-if="hazard"
+            :buttons="[{ text: getStatusTip(), type: 'default', disabled: true }]"
+            variant="fixed"
+            :safe-area="true"
+        />
 
         <view class="modal-mask" v-if="showAssign" @tap="closeAssignModal">
             <view class="modal-content" @tap.stop>
@@ -261,10 +261,13 @@
                         </picker>
                     </view>
                 </view>
-                <view class="modal-footer">
-                    <button class="btn-cancel" @tap="closeAssignModal">取消</button>
-                    <button class="btn-confirm" @tap="confirmAssign">确认指派</button>
-                </view>
+                <ActionButtonBar
+                    :buttons="[
+                        { text: '取消', type: 'cancel', onClick: closeAssignModal },
+                        { text: '确认指派', type: 'primary', onClick: confirmAssign }
+                    ]"
+                    variant="modal"
+                />
             </view>
         </view>
 
@@ -316,10 +319,13 @@
                         </view>
                     </view>
                 </view>
-                <view class="modal-footer">
-                    <button class="btn-cancel" @tap="closeRectifyModal">取消</button>
-                    <button class="btn-confirm" @tap="confirmRectify">提交整改</button>
-                </view>
+                <ActionButtonBar
+                    :buttons="[
+                        { text: '取消', type: 'cancel', onClick: closeRectifyModal },
+                        { text: '提交整改', type: 'primary', onClick: confirmRectify }
+                    ]"
+                    variant="modal"
+                />
             </view>
         </view>
 
@@ -342,10 +348,13 @@
                         />
                     </view>
                 </view>
-                <view class="modal-footer">
-                    <button class="btn-cancel" @tap="closeReviewModal">取消</button>
-                    <button class="btn-confirm" @tap="confirmReviewReject">确认提交</button>
-                </view>
+                <ActionButtonBar
+                    :buttons="[
+                        { text: '取消', type: 'cancel', onClick: closeReviewModal },
+                        { text: '确认提交', type: 'primary', onClick: confirmReviewReject }
+                    ]"
+                    variant="modal"
+                />
             </view>
         </view>
     </view>

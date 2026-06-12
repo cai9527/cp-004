@@ -176,21 +176,34 @@
             </view>
         </view>
 
-        <view class="bottom-action-bar">
-            <view v-if="showAssignButton" class="action-row">
-                <button class="btn btn-warning" @tap="openAssignModal">指派整改</button>
-            </view>
-            <view v-else-if="showRectifyButton" class="action-row">
-                <button class="btn btn-primary" @tap="goRectify">提交整改</button>
-            </view>
-            <view v-else-if="showReviewButtons" class="action-row two-col">
-                <button class="btn btn-danger" @tap="reviewReject">复查不通过</button>
-                <button class="btn btn-success ml-16" @tap="reviewPass">复查通过</button>
-            </view>
-            <view v-else-if="showReRectifyButton" class="action-row">
-                <button class="btn btn-warning" @tap="goRectify">重新整改</button>
-            </view>
-        </view>
+        <ActionButtonBar
+            v-if="showAssignButton"
+            :buttons="[{ text: '指派整改', type: 'warning', onClick: openAssignModal }]"
+            variant="fixed"
+            :safe-area="true"
+        />
+        <ActionButtonBar
+            v-else-if="showRectifyButton"
+            :buttons="[{ text: '提交整改', type: 'primary', onClick: goRectify }]"
+            variant="fixed"
+            :safe-area="true"
+        />
+        <ActionButtonBar
+            v-else-if="showReviewButtons"
+            :buttons="[
+                { text: '复查不通过', type: 'danger', onClick: reviewReject },
+                { text: '复查通过', type: 'success', onClick: reviewPass }
+            ]"
+            variant="fixed"
+            :safe-area="true"
+            layout="equal"
+        />
+        <ActionButtonBar
+            v-else-if="showReRectifyButton"
+            :buttons="[{ text: '重新整改', type: 'warning', onClick: goRectify }]"
+            variant="fixed"
+            :safe-area="true"
+        />
 
         <view v-if="showAssign" class="modal-mask" @tap="closeAssignModal">
             <view class="modal-content" @tap.stop="">
@@ -211,10 +224,13 @@
                         </picker>
                     </view>
                 </view>
-                <view class="modal-footer">
-                    <button class="btn-modal btn-cancel" @tap="closeAssignModal">取消</button>
-                    <button class="btn-modal btn-confirm" @tap="confirmAssign">确认指派</button>
-                </view>
+                <ActionButtonBar
+                    :buttons="[
+                        { text: '取消', type: 'cancel', onClick: closeAssignModal },
+                        { text: '确认指派', type: 'primary', onClick: confirmAssign }
+                    ]"
+                    variant="modal"
+                />
             </view>
         </view>
 

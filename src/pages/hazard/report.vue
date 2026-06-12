@@ -216,14 +216,14 @@
             <view class="bottom-space"></view>
         </scroll-view>
 
-        <view class="footer-bar">
-            <button class="btn-draft" @tap="saveDraft">
-                <text>保存草稿</text>
-            </button>
-            <button class="btn-submit" @tap="handleSubmit">
-                <text>{{ networkStatus ? '立即上报' : '离线暂存' }}</text>
-            </button>
-        </view>
+        <ActionButtonBar
+            :buttons="[
+                { text: '保存草稿', type: 'primary', outline: true, onClick: saveDraft },
+                { text: networkStatus ? '立即上报' : '离线暂存', type: 'primary', onClick: handleSubmit, loading: submitting }
+            ]"
+            variant="sticky"
+            :safe-area="true"
+        />
 
         <picker 
             mode="date" 
