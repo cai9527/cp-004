@@ -1,12 +1,10 @@
 <template>
     <view class="login-page">
-        <view class="login-bg">
-            <view class="bg-circle bg-circle-1"></view>
-            <view class="bg-circle bg-circle-2"></view>
-            <view class="bg-circle bg-circle-3"></view>
-        </view>
-        
-        <view class="login-content">
+        <view class="login-header">
+            <view class="login-bg">
+                <view class="bg-circle bg-circle-1"></view>
+                <view class="bg-circle bg-circle-2"></view>
+            </view>
             <view class="logo-area">
                 <view class="logo-icon">
                     <view class="logo-shape">
@@ -16,7 +14,9 @@
                 <text class="app-title">智慧工地巡检</text>
                 <text class="app-subtitle">Smart Site Inspection</text>
             </view>
+        </view>
 
+        <view class="login-body">
             <view class="form-card">
                 <view class="form-title">
                     <text>账号登录</text>
@@ -53,11 +53,14 @@
                 </view>
 
                 <view class="form-options">
-                    <view class="remember-me" @tap="rememberMe = !rememberMe">
-                        <view class="checkbox" :class="{ checked: rememberMe }">
-                            <text v-if="rememberMe" class="check-icon">✓</text>
-                        </view>
-                        <text>记住密码</text>
+                    <view class="remember-me" @tap="toggleRemember">
+                        <checkbox 
+                            :checked="rememberMe" 
+                            color="#1E88E5"
+                            class="remember-checkbox"
+                            @tap.stop="toggleRemember"
+                        />
+                        <text class="remember-text">记住密码</text>
                     </view>
                     <text class="forgot-password" @tap="showTip">忘记密码？</text>
                 </view>
@@ -90,10 +93,10 @@
                     </view>
                 </view>
             </view>
-        </view>
 
-        <view class="login-footer">
-            <text>© 2024 智慧工地安全管理系统 v1.0.0</text>
+            <view class="login-footer">
+                <text>© 2024 智慧工地安全管理系统 v1.0.0</text>
+            </view>
         </view>
     </view>
 </template>
@@ -170,6 +173,10 @@ export default {
 
         showTip() {
             uni.showToast({ title: '请联系系统管理员重置密码', icon: 'none' })
+        },
+
+        toggleRemember() {
+            this.rememberMe = !this.rememberMe
         }
     }
 }
@@ -178,11 +185,16 @@ export default {
 <style lang="scss" scoped>
 .login-page {
     min-height: 100vh;
-    background: linear-gradient(135deg, #1565C0 0%, #1E88E5 50%, #42A5F5 100%);
-    position: relative;
-    overflow: hidden;
+    background: #F5F6FA;
     display: flex;
     flex-direction: column;
+}
+
+.login-header {
+    position: relative;
+    background: linear-gradient(135deg, #1565C0 0%, #1E88E5 50%, #42A5F5 100%);
+    padding: 100rpx 48rpx 80rpx;
+    overflow: hidden;
 }
 
 .login-bg {
@@ -210,31 +222,16 @@ export default {
 .bg-circle-2 {
     width: 400rpx;
     height: 400rpx;
-    top: 30%;
+    bottom: -100rpx;
     left: -150rpx;
-}
-
-.bg-circle-3 {
-    width: 300rpx;
-    height: 300rpx;
-    bottom: 20%;
-    right: -80rpx;
-}
-
-.login-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 100rpx 48rpx 0;
-    position: relative;
-    z-index: 1;
 }
 
 .logo-area {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 80rpx;
+    position: relative;
+    z-index: 1;
 }
 
 .logo-icon {
@@ -276,18 +273,28 @@ export default {
     letter-spacing: 2rpx;
 }
 
+.login-body {
+    flex: 1;
+    padding: 0 48rpx;
+    margin-top: -40rpx;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+
 .form-card {
     background: #ffffff;
     border-radius: 28rpx;
-    padding: 48rpx 40rpx;
-    box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.12);
+    padding: 48rpx 44rpx;
+    box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.1);
 }
 
 .form-title {
     font-size: 36rpx;
     font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 40rpx;
+    margin-bottom: 48rpx;
     text-align: center;
 }
 
@@ -295,10 +302,10 @@ export default {
     display: flex;
     align-items: center;
     background: #F8F9FC;
-    border-radius: 16rpx;
-    padding: 0 24rpx;
-    height: 96rpx;
-    margin-bottom: 24rpx;
+    border-radius: 20rpx;
+    padding: 0 28rpx;
+    height: 120rpx;
+    margin-bottom: 28rpx;
     border: 2rpx solid transparent;
     transition: all 0.3s;
 }
@@ -306,30 +313,31 @@ export default {
 .form-item:focus-within {
     border-color: #1E88E5;
     background: #ffffff;
+    box-shadow: 0 4rpx 16rpx rgba(30, 136, 229, 0.1);
 }
 
 .input-icon {
-    width: 48rpx;
+    width: 56rpx;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 16rpx;
+    margin-right: 20rpx;
 }
 
 .iconfont {
-    font-size: 36rpx;
+    font-size: 40rpx;
 }
 
 .form-input {
     flex: 1;
     height: 100%;
-    font-size: 28rpx;
+    font-size: 32rpx;
     color: #1a1a1a;
 }
 
 .input-placeholder {
     color: #B0B8C4;
-    font-size: 28rpx;
+    font-size: 32rpx;
 }
 
 .toggle-password {
@@ -338,15 +346,15 @@ export default {
 }
 
 .toggle-password text {
-    font-size: 36rpx;
+    font-size: 40rpx;
 }
 
 .form-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40rpx;
-    margin-top: 8rpx;
+    margin-bottom: 44rpx;
+    margin-top: 12rpx;
 }
 
 .remember-me {
@@ -354,55 +362,38 @@ export default {
     align-items: center;
 }
 
-.checkbox {
-    width: 36rpx;
-    height: 36rpx;
-    border: 2rpx solid #D0D5DD;
-    border-radius: 8rpx;
-    margin-right: 12rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
+.remember-checkbox {
+    transform: scale(0.8);
+    margin-right: 4rpx;
 }
 
-.checkbox.checked {
-    background: #1E88E5;
-    border-color: #1E88E5;
-}
-
-.check-icon {
-    color: #fff;
-    font-size: 24rpx;
-    font-weight: bold;
-}
-
-.remember-me text {
-    font-size: 24rpx;
-    color: #666;
+.remember-text {
+    font-size: 28rpx;
+    color: #555;
+    margin-left: 4rpx;
 }
 
 .forgot-password {
-    font-size: 24rpx;
+    font-size: 28rpx;
     color: #1E88E5;
 }
 
 .btn-login {
     width: 100%;
-    height: 96rpx;
+    height: 104rpx;
     background: linear-gradient(135deg, #1E88E5, #1565C0);
-    border-radius: 16rpx;
+    border-radius: 20rpx;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-size: 32rpx;
+    font-size: 34rpx;
     font-weight: 600;
     letter-spacing: 8rpx;
     box-shadow: 0 8rpx 24rpx rgba(30, 136, 229, 0.3);
     transition: all 0.3s;
     border: none;
-    line-height: 96rpx;
+    line-height: 104rpx;
     padding: 0;
 }
 
@@ -433,16 +424,16 @@ export default {
 }
 
 .demo-accounts {
-    margin-top: 40rpx;
-    padding-top: 32rpx;
+    margin-top: 44rpx;
+    padding-top: 36rpx;
     border-top: 2rpx solid #F0F2F5;
 }
 
 .demo-title {
-    font-size: 24rpx;
+    font-size: 26rpx;
     color: #999;
     display: block;
-    margin-bottom: 16rpx;
+    margin-bottom: 20rpx;
 }
 
 .demo-list {
@@ -481,14 +472,12 @@ export default {
 }
 
 .login-footer {
-    padding: 24rpx;
+    padding: 48rpx 24rpx 36rpx;
     text-align: center;
-    position: relative;
-    z-index: 1;
 }
 
 .login-footer text {
     font-size: 22rpx;
-    color: rgba(255, 255, 255, 0.6);
+    color: #B0B8C4;
 }
 </style>
