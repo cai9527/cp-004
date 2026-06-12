@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "智慧工地巡检",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "工作台",

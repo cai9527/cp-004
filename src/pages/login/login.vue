@@ -164,7 +164,7 @@ export default {
                     }
                     uni.showToast({ title: '登录成功', icon: 'success' })
                     setTimeout(() => {
-                        uni.switchTab({ url: '/pages/index/index' })
+                        uni.reLaunch({ url: '/pages/home/index' })
                     }, 1000)
                 } else {
                     uni.showToast({ title: res.message || '登录失败', icon: 'none' })
